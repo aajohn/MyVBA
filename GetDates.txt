@@ -1,0 +1,151 @@
+Attribute VB_Name = "GetDates"
+Option Explicit
+Sub SaveVBACode()
+'This code Exports all VBA modules
+Dim i As Integer
+Dim mName As String
+Dim Fname As String
+
+    With ThisWorkbook
+        For i = 1 To .VBProject.VBComponents.count
+            If .VBProject.VBComponents(i).CodeModule.CountOfLines > 0 Then
+                mName = .VBProject.VBComponents(i%).CodeModule.Name
+                
+                 Fname = .path & "\" & mName & ".txt"
+                .VBProject.VBComponents(mName).Export Fname
+            End If
+        Next i
+    End With
+    
+End Sub
+Public Sub ExportVisualBasicCode()
+    Const Module = 1
+    Const ClassModule = 2
+    Const Form = 3
+    Const Document = 100
+    Const Padding = 24
+    
+    Dim VBComponent As Object
+    Dim count As Integer
+    Dim path As String
+    Dim directory As String
+    Dim extension As String
+    Dim fso As New FileSystemObject
+    
+    directory = ActiveWorkbook.path & "\VisualBasic"
+    count = 0
+    
+    If Not fso.FolderExists(directory) Then
+        Call fso.CreateFolder(directory)
+    End If
+    Set fso = Nothing
+    
+    For Each VBComponent In ActiveWorkbook.VBProject.VBComponents
+        Select Case VBComponent.Type
+            Case ClassModule, Document
+                extension = ".cls"
+            Case Form
+                extension = ".frm"
+            Case Module
+                extension = ".bas"
+            Case Else
+                extension = ".txt"
+        End Select
+            
+                
+        On Error Resume Next
+        Err.Clear
+        
+        path = directory & "\" & VBComponent.Name & extension
+        Call VBComponent.Export(path)
+        
+        If Err.Number <> 0 Then
+            Call MsgBox("Failed to export " & VBComponent.Name & " to " & path, vbCritical)
+        Else
+            count = count + 1
+            Debug.Print "Exported " & Left$(VBComponent.Name & ":" & Space(Padding), Padding) & path
+        End If
+
+        On Error GoTo 0
+    Next
+    
+    Application.StatusBar = "Successfully exported " & CStr(count) & " VBA files to " & directory
+    Application.OnTime Now + TimeSerial(0, 0, 10), "ClearStatusBar"
+End Sub
+Sub GetDates()
+
+    'Set up variables
+    Dim LastRow As Long
+    Dim aLastRow As Long
+    Dim i As Integer
+    Dim erow As Integer
+    Dim LastDate As Date
+    
+    'find the last row that contains data
+    LastRow = Workbooks("TestCompoCode.xlsm").Worksheets("My COMPO").Range("A" & Rows.count).End(xlUp).Row
+    
+    'find last appointment
+    If Not IsDate(Cells(LastRow, 5)) Then
+        LastDate = "01/01/2017"
+    
+    Else: LastDate = Cells(LastRow, "e").Value
+        
+    End If
+    
+    'open the rota
+    Workbooks.Open Filename:="\\prodds.ntnl\shared\NE\NorthEast\Incidents and Contingency Planning\EM Incidents\Rotas\West Yorks\Day time EMSC and Compo rota (May-Nov 2017).xlsx"
+    
+    
+    'find the last row that contains data
+    aLastRow = Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Range("R" & Rows.count).End(xlUp).Row
+
+    For i = 5 To aLastRow
+        
+        If Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Cells(i, 18).Value > LastDate And Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Cells(i, 20).Value = "Arnold J" Then
+
+            ActiveSheet.Cells(i, 18).Select
+            
+            Selection.Copy
+                       
+            Windows("TestCompoCode.xlsm").Activate
+            Worksheets("My COMPO").Select
+            
+            'move to next empty row
+            erow = Cells(Rows.count, 1).End(xlUp).Offset(1, 0).Row
+            
+            ActiveSheet.Cells(erow, 5).Select
+            
+            'paste COMPO date
+            Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+            :=False, Transpose:=False
+            Application.CutCopyMode = False
+            
+            'change date format
+            Selection.NumberFormat = "m/d/yyyy"
+            
+            Cells(erow, 1).Value = "COMPO"
+            Cells(erow, 2).Value = "LS11 9AT"
+            Cells(erow, 3).Value = "Day time EDMO"
+            Cells(erow, 4).Value = ""
+            
+            Cells(erow, 6).Value = "09:00"
+            Cells(erow, 7).Value = Cells(erow, 5)
+            'Cells(erow, 7).NumberFormat = "m/d/yy;@"
+            Cells(erow, 7).NumberFormat = "m/d/yyyy"
+            Cells(erow, 8).Value = "17:00"
+            Cells(erow, 9).Value = "90"
+            LastDate = Cells(erow, 5).Value
+            
+            Windows("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Activate
+            Worksheets("Duty Rota").Select
+        End If
+           
+    Next i
+        
+    'switch to the rota
+    Windows("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Activate
+    ActiveWindow.Close
+    
+End Sub
+
+
