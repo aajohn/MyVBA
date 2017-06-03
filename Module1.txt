@@ -1,0 +1,53 @@
+Attribute VB_Name = "Module1"
+Option Explicit
+Sub SaveVBACode()
+'This code Exports all VBA modules
+Dim i As Integer
+Dim mName As String
+Dim Fname As String
+
+    With ThisWorkbook
+        For i = 1 To .VBProject.VBComponents.count
+            If .VBProject.VBComponents(i).CodeModule.CountOfLines > 0 Then
+                mName = .VBProject.VBComponents(i%).CodeModule.Name
+                
+                 Fname = .Path & "\" & mName & ".txt"
+                .VBProject.VBComponents(mName).Export Fname
+            End If
+        Next i
+    End With
+    
+End Sub
+Sub UnprotectVBProject(WB As Workbook, ByVal Password As String)
+Dim vbProj As Object
+
+Set vbProj = WB.VBProject
+
+'can't do it if already unlocked!
+If vbProj.Protection <> 1 Then Exit Sub
+
+Set Application.VBE.ActiveVBProject = vbProj
+
+' now use lovely SendKeys to quote the project password
+SendKeys Password & "~~"
+
+Application.VBE.CommandBars(1).FindControl(ID:=2578, recursive:=True).Execute
+End Sub
+Sub AddReferences()
+    'try to add a reference to extensibility
+    On Error GoTo CanNotAdd
+    Application.VBE.ActiveVBProject.References.AddFromGuid "{0002E157-0000-0000-C000-000000000046}", 1, 0
+    Exit Sub
+CanNotAdd:
+    MsgBox "Can not reference"
+End Sub
+
+Sub ListReferences()
+    
+    'create a variable to refer to each reference
+    Dim ref As Reference
+    For Each ref In Application.VBE.ActiveVBProject.References
+        Debug.Print ref.Name, ref.Description
+    Next ref
+
+End Sub

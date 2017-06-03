@@ -1,0 +1,6 @@
+Attribute VB_Name = "Modulo1"
+Option Explicit
+
+Sub lancia_cCalendar()
+UserForm1.Show
+End Sub
