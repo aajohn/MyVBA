@@ -18,7 +18,60 @@ Dim Fname As String
     End With
     
 End Sub
+Public Sub ExportVisualBasicCode()
+    Const Module = 1
+    Const ClassModule = 2
+    Const Form = 3
+    Const Document = 100
+    Const Padding = 24
+    
+    Dim VBComponent As Object
+    Dim count As Integer
+    Dim path As String
+    Dim directory As String
+    Dim extension As String
+    Dim fso As New FileSystemObject
+    
+    directory = ActiveWorkbook.path & "\VisualBasic"
+    count = 0
+    
+    If Not fso.FolderExists(directory) Then
+        Call fso.CreateFolder(directory)
+    End If
+    Set fso = Nothing
+    
+    For Each VBComponent In ActiveWorkbook.VBProject.VBComponents
+        Select Case VBComponent.Type
+            Case ClassModule, Document
+                extension = ".cls"
+            Case Form
+                extension = ".frm"
+            Case Module
+                extension = ".bas"
+            Case Else
+                extension = ".txt"
+        End Select
+            
+                
+        On Error Resume Next
+        Err.Clear
+        
+        path = directory & "\" & VBComponent.Name & extension
+        Call VBComponent.Export(path)
+        
+        If Err.Number <> 0 Then
+            Call MsgBox("Failed to export " & VBComponent.Name & " to " & path, vbCritical)
+        Else
+            count = count + 1
+            Debug.Print "Exported " & Left$(VBComponent.Name & ":" & Space(Padding), Padding) & path
+        End If
 
+        On Error GoTo 0
+    Next
+    
+    Application.StatusBar = "Successfully exported " & CStr(count) & " VBA files to " & directory
+    Application.OnTime Now + TimeSerial(0, 0, 10), "ClearStatusBar"
+End Sub
 Sub GetDates()
 
     'Set up variables
@@ -27,7 +80,6 @@ Sub GetDates()
     Dim i As Integer
     Dim erow As Integer
     Dim LastDate As Date
-    dim MyFile as variant
     
     'find the last row that contains data
     LastRow = Workbooks("TestCompoCode.xlsm").Worksheets("My COMPO").Range("A" & Rows.count).End(xlUp).Row
@@ -40,31 +92,22 @@ Sub GetDates()
         
     End If
     
-    'set up a special error handler
-    On Error GoTo FileNotThere
-    
     'open the rota
     Workbooks.Open Filename:="\\prodds.ntnl\shared\NE\NorthEast\Incidents and Contingency Planning\EM Incidents\Rotas\West Yorks\Day time EMSC and Compo rota (May-Nov 2017).xlsx"
     
-    'if we get here cancel the special error handler
-    on error goto 0
     
     'find the last row that contains data
     aLastRow = Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Range("R" & Rows.count).End(xlUp).Row
-    
-    'the data we want starts at row 5 of the sheet
-    '
+
     For i = 5 To aLastRow
-    
-        'check for last retrieved data where I've been rostered...
+        
         If Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Cells(i, 18).Value > LastDate And Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Cells(i, 20).Value = "Arnold J" Then
 
-            '...select and copy new date when I'm rostered...
             ActiveSheet.Cells(i, 18).Select
             
             Selection.Copy
                        
-           'make sure workbook is ready... Windows("TestCompoCode.xlsm").Activate
+            Windows("TestCompoCode.xlsm").Activate
             Worksheets("My COMPO").Select
             
             'move to next empty row
@@ -80,7 +123,6 @@ Sub GetDates()
             'change date format
             Selection.NumberFormat = "m/d/yyyy"
             
-            'fill in the other cells next to new date
             Cells(erow, 1).Value = "COMPO"
             Cells(erow, 2).Value = "LS11 9AT"
             Cells(erow, 3).Value = "Day time EDMO"
@@ -94,35 +136,15 @@ Sub GetDates()
             Cells(erow, 9).Value = "90"
             LastDate = Cells(erow, 5).Value
             
-            'switch back to data source...
             Windows("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Activate
             Worksheets("Duty Rota").Select
         End If
            
     Next i
         
-    'switch to the rota and close it
+    'switch to the rota
     Windows("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Activate
     ActiveWindow.Close
-    
-    exit sub
-    
-    'error handler
-    FileNotThere:
-      MyPrompt="There was an error opening the file. " & "It is possible the file has been moved. " & "Click OK to browse for the file or click " & "Cancel to end the program"
-    Ans=Msgbox(prompt:=MyPrompt,Buttons:=vbOKcancel)
-      if ans=vbcancel then exit sub
-      
-      'if clicked ok browse for the file
-      MyFile=application.getopenfilename
-      if MyFile=false then exit sub
-      
-      'if file is corrupt stop the program
-      on error goto 0
-      
-      workbooks.open MyFile
-      
-      resume next
     
 End Sub
 
