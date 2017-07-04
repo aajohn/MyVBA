@@ -12,7 +12,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Option Explicit
+
 'Private Sub Calendar1_Click()
 '    Select Case Weekday(Calendar1.Value)
 '        Case vbSaturday
@@ -23,18 +25,23 @@ Option Explicit
 '    If Calendar1.Value > Date Then Calendar1.Value = Date
 '    Call InFreq
 'End Sub
+
 'Private Sub SpinButton1_SpinDown()
 '    Calendar1.PreviousMonth
 'End Sub
+
 'Private Sub SpinButton1_SpinUp()
 '    Calendar1.NextMonth
 'End Sub
+
 'Private Sub ComboBox1_Change()
 '    Call InFreq
 'End Sub
+
 'Private Sub ComboBox2_Change()
 '    Call InFreq
 'End Sub
+
 'Private Sub InFreq()
 '    Dim pDate As Date
 '    If Not ComboBox1.ListIndex = -1 Then CommandButton1.Visible = True
@@ -47,6 +54,7 @@ Option Explicit
 '        Label9.Caption = "Due Qtr " & Format(pDate, "q yyyy")
 '    End If
 'End Sub
+
 'Private Sub CommandButton1_Click()
 '    Dim inspDate As String
 '    inspDate = Format(Calendar1.Value, "dddd") & " " & Format(Calendar1.Value, "d mmmm yyyy")
@@ -91,20 +99,25 @@ Option Explicit
 '    If Not IsEmpty(Range("J18")) Then CommandButton10.Visible = True
 '    rDate = Calendar1.Value
 'End Sub
+
 'Private Sub CommandButton2_Click()
 '    Unload Me
 'End Sub
+
 'Private Sub CommandButton3_Click()
 '    UserFormUpdateContact.Show
 'End Sub
+
 'Private Sub CommandButton4_Click()
 '    Load UserFormNote
 '    Call UserFormNote.FillVars(True)
 '    UserFormNote.Show
 'End Sub
+
 'Private Sub CommandButton6_Click()
 '    UserFormUpdatePPE.Show
 'End Sub
+
 'Private Sub CommandButton7_Click()
 '    CommandButton7.Visible = False
 '    Load UserFormInspectionFollowUp2
@@ -119,6 +132,7 @@ Option Explicit
 '    End If
 '    CommandButton8.Visible = True
 'End Sub
+
 'Private Sub CommandButton10_Click()
 '    CommandButton10.Visible = False
 '    Load UserFormInspectionFollowUp2
@@ -133,6 +147,7 @@ Option Explicit
 '    End If
 '    CommandButton8.Visible = True
 'End Sub
+
 'Private Sub CommandButton11_Click()
 '    If Not IsDate(TextBox1.Value) Then Exit Sub
 '    DRow = Range("G3")
@@ -142,10 +157,12 @@ Option Explicit
 '    Call CopyPasteData(Range("G3"), True, False)
 '    Unload Me
 'End Sub
+
 'Private Sub CommandButton8_Click()
 '    Call CopyPasteData(Range("G3"), True, False)
 '    Unload Me
 'End Sub
+
 'Sub start()
 '    Dim pDate As Date
 '    Dim pInsp As String
