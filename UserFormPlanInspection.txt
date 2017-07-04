@@ -12,7 +12,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Option Explicit
+
 Private Sub Calendar1_Click()
     Select Case Weekday(Calendar1.Value)
         Case vbSaturday
@@ -22,12 +24,15 @@ Private Sub Calendar1_Click()
     End Select
     If Calendar1.Value < Date Then Calendar1.Value = Date
 End Sub
+
 Private Sub SpinButton1_SpinDown()
     Calendar1.PreviousMonth
 End Sub
+
 Private Sub SpinButton1_SpinUp()
     Calendar1.NextMonth
 End Sub
+
 Private Sub CommandButton1_Click()
     Dim aLoc As String, aStr As String, aBody As String
     Dim eTime
@@ -125,15 +130,19 @@ Private Sub CommandButton1_Click()
     '** Call RemoveApp
 jmp:
 End Sub
+
 Private Sub CommandButton2_Click()
     Unload Me
 End Sub
+
 Private Sub CommandButton3_Click()
     Call OutlookShowCal
 End Sub
+
 Private Sub CommandButton4_Click()
     Unload Me
 End Sub
+
 Private Sub CommandButton5_Click()
     '** need to sort this bit
     If ComboBox2.ListIndex = -1 Then Exit Sub
@@ -143,9 +152,11 @@ Private Sub CommandButton5_Click()
     Call CopyPasteData(DRow, True, True)
     Unload Me
 End Sub
+
 Private Sub TextBox1_Change()
     OptionButton2.Value = True
 End Sub
+
 Private Sub UserForm_Initialize()
     Dim PForce As String
     Dim lp As Integer
