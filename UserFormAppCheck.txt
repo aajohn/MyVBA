@@ -12,7 +12,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Option Explicit
+
 Private Sub CommandButton1_Click()
     count = Sheets("Details").Range("G3")
     Call OpenData("tsds")
@@ -25,6 +27,7 @@ Private Sub CommandButton1_Click()
     CommandButton4.Caption = "Continue - Sealed Only"
     If Not IsEmpty(Sheets("Details").Range("D14")) Then CommandButton4.Visible = True
 End Sub
+
 Private Sub CommandButton2_Click()
     count = Sheets("Details").Range("G3")
     Call OpenData("tsds")
@@ -37,13 +40,16 @@ Private Sub CommandButton2_Click()
     CommandButton4.Caption = "Continue - Open Only"
     If Not IsEmpty(Sheets("Details").Range("J14")) Then CommandButton4.Visible = True
 End Sub
+
 Private Sub CommandButton3_Click()
     DRow = 1
     Unload Me
 End Sub
+
 Private Sub CommandButton4_Click()
     Unload Me
 End Sub
+
 Private Sub UserForm_Initialize()
     Call RemoveCaption(Me)
     If Epsilon = "" Then Call LoadDocs
