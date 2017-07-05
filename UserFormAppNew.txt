@@ -14,12 +14,15 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Option Explicit
+
 Private Sub CommandButton1_Click()
     Call ExportData(True)
 End Sub
+
 Private Sub CommandButton2_Click()
     Unload Me
 End Sub
+
 Private Sub CommandButton3_Click()
     If Not TextBox1.Value = "" Then
         If IsNumeric(Left(TextBox1.Value, 1)) Then TextBox1.Value = Sheets("LookUp").Range("A2") & TextBox1.Value
@@ -58,17 +61,21 @@ Private Sub CommandButton3_Click()
         End If
     End If
 End Sub
+
 Private Sub CommandButton4_Click()
     Dim appIE As Object
     If TextBox15.Value = "" Then Exit Sub
     Call LaunchIE(Sheets("LookUp").Range("CH2"), 1, TextBox15.Value)
 End Sub
+
 Private Sub CommandButton5_Click()
     Call ExportData(False)
 End Sub
+
 Private Sub CommandButton6_Click()
     Call CheckPostcode
 End Sub
+
 Private Sub UserForm_Initialize()
     Call RemoveCaption(Me)
     If Epsilon = "" Then Call LoadDocs
@@ -89,6 +96,7 @@ Private Sub UserForm_Initialize()
         ComboBox3.List(count) = Sheets("LookUp").Range("C" & count + 3).Value
     Next count
 End Sub
+
 Private Sub ExportData(check)
     Dim pCodeCheck As Boolean
     If ComboBox1.Value = "" Then
