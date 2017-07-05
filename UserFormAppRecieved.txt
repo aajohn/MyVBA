@@ -12,7 +12,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Option Explicit
+
 Private Sub CommandButton1_Click()
     Dim rDate As Date, dDate As Date, wDate As Date, ccDate As Date, sMarker As Boolean, oMarker As Boolean
     tdate = Format(Date, "d/m/yyyy")
@@ -135,10 +137,12 @@ jmp:
     Call SendEmail(eTo, eSubj, eMsg, "")
     Unload Me
 End Sub
+
 Private Sub CommandButton2_Click()
     DRow = 0
     Unload Me
 End Sub
+
 Private Sub ListBox1_Click()
     check = False: check2 = False
     If ListBox1.Value = "Change of Fact" Then
@@ -172,6 +176,7 @@ Private Sub ListBox1_Click()
         Call sVis(True, True, check1, check2, True, True, True, check1, check2, check1, check2, True, True)
     End If
 End Sub
+
 Sub FillVars(check)
     Call RemoveCaption(Me)
     If Epsilon = "" Then Call LoadDocs
@@ -195,6 +200,7 @@ Sub FillVars(check)
         Call sVis(True, True, check1, check2, True, True, True, check1, check2, check1, check2, True, True)
     End If
 End Sub
+
 Private Sub CreateForm(Code) 'were does code come from
     If Code = "" Then
         Label1.Caption = ""
@@ -217,6 +223,7 @@ Private Sub CreateForm(Code) 'were does code come from
     End If
     TextBox7.Value = Format(Date, "d/m/yyyy")
 End Sub
+
 Private Sub sVis(L4 As Boolean, L6 As Boolean, L7 As Boolean, L8 As Boolean, L9 As Boolean, L10 As Boolean, T2 As Boolean, T3 As Boolean, T4 As Boolean, T5 As Boolean, T6 As Boolean, T7 As Boolean, T8 As Boolean)
     Label4.Visible = L4
     Label6.Visible = L6

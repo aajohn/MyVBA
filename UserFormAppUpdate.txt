@@ -12,8 +12,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Option Explicit
+
 Private DateArray(10) As Date
+
 Private Sub CommandButton1_Click()
     Dim aStr As String, aLoc As String
     Dim appref As String, vType As String, dLocation As String
@@ -104,9 +107,11 @@ Private Sub CommandButton1_Click()
         Exit Sub
     End If
 End Sub
+
 Private Sub CommandButton2_Click()
     Unload Me
 End Sub
+
 Private Sub CommandButton3_Click()
     Dim surCheck As Integer
     Dim style, response ' will go
@@ -178,6 +183,7 @@ Private Sub CommandButton3_Click()
     Call Log("Issued", marker1, marker2)
     Unload Me
 End Sub
+
 Private Sub CheckData()
     check = False
     If Not TextBox1.Value = "" And Not IsDate(TextBox1.Value) Then check = True
@@ -213,18 +219,23 @@ Private Sub CheckData()
         Exit Sub
     End If
 End Sub
+
 Private Sub TextBox1_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox1.Value = Format(Date, "d/m/yyyy")
 End Sub
+
 Private Sub TextBox2_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox2.Value = Format(Date, "d/m/yyyy")
 End Sub
+
 Private Sub TextBox3_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox3.Value = Format(Date, "d/m/yyyy")
 End Sub
+
 Private Sub TextBox4_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox4.Value = Format(Date, "d/m/yyyy")
 End Sub
+
 Private Sub TextBox5_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox5.Value = Format(Date, "d/m/yyyy")
     If Not TextBox5.Value = "" Then
@@ -236,15 +247,19 @@ Private Sub TextBox5_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift A
         Label5.Visible = False: TextBox4.Visible = False: TextBox9.Visible = False
     End If
 End Sub
+
 Private Sub TextBox7_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox7.Value = Format(Date, "d/m/yyyy")
 End Sub
+
 Private Sub TextBox8_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox8.Value = Format(Date, "d/m/yyyy")
 End Sub
+
 Private Sub TextBox9_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox9.Value = Format(Date, "d/m/yyyy")
 End Sub
+
 Private Sub TextBox10_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
     If KeyCode = vbKeyF2 Then TextBox10.Value = Format(Date, "d/m/yyyy")
     If Not TextBox10.Value = "" Then
@@ -256,6 +271,7 @@ Private Sub TextBox10_KeyUp(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift 
         Label5.Visible = False: TextBox4.Visible = False: TextBox9.Visible = False
     End If
 End Sub
+
 Private Sub UserForm_Initialize()
     Dim AppTypeS As String, AppTypeO As String
     Call RemoveCaption(Me)

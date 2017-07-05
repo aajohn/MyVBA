@@ -1,5 +1,6 @@
 Attribute VB_Name = "Module3_OpenCloseData"
 Option Explicit
+
 Sub OpenData(fileName As String)
     Dim Try As Integer
     Dim var As String
@@ -76,6 +77,7 @@ ErrHandler:
     End If
     
 End Sub
+
 Sub CloseData(fileName As String, check)
     If WorkbookIsOpen(fileName & ".xls") = True Then
         Windows(fileName & ".xls").Activate
@@ -101,6 +103,7 @@ Sub CloseData(fileName As String, check)
         Application.Cursor = xlNormal
     End If
 End Sub
+
 Private Function WorkbookIsOpen(wbname) As Boolean
     '   Returns TRUE if the workbook is open
     Dim WB As Workbook
@@ -108,6 +111,7 @@ Private Function WorkbookIsOpen(wbname) As Boolean
     Set WB = Workbooks(wbname)
     If err = 0 Then WorkbookIsOpen = True Else: WorkbookIsOpen = False
 End Function
+
 Sub LoadDocs()
     Epsilon = "O:\RSR TEAMSheet\"
 End Sub

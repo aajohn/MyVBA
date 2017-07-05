@@ -1,5 +1,6 @@
 Attribute VB_Name = "Module4_Letters"
 Option Explicit
+
 Sub CreateLetter(TemplateFile, SendTo, From, L1, L2, L3, L4, L5, L6, L7, L8, Marker)
     Dim OurRef, Office, AgencyAddress, From2, From3, From4
     If Epsilon = "" Then Call LoadDocs

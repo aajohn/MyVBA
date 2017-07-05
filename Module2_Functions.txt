@@ -11,6 +11,7 @@ Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (B
 
 Public RunWhen As Double
 Public Const NUM_MINUTES = 15
+
 Sub RemoveCaption(objForm As Object)
 ''======================================================
 ''  Removes the top bar from a User Form
@@ -32,6 +33,7 @@ Sub RemoveCaption(objForm As Object)
     SetWindowLong mhWndForm, -16, lStyle
     DrawMenuBar mhWndForm
 End Sub
+
 Public Sub TimeOut()
     Dim lExcelHwnd As Long
     lExcelHwnd = FindWindow("XLMAIN", Application.Caption)
@@ -40,12 +42,14 @@ Public Sub TimeOut()
     UserFormTimeOut.Show
     On Error GoTo 0
 End Sub
+
 Sub RSRExit()
     If Drafts Then UserFormCheckDrafts.Show
     Application.ScreenUpdating = False
     Application.DisplayAlerts = False
     Application.Quit
 End Sub
+
 Function ShellOper(strFileExe As String) As Long
     Dim hWndDesk As Long
     hWndDesk = GetDesktopWindow()
@@ -58,6 +62,7 @@ Function ShellOper(strFileExe As String) As Long
 ErrH:
     ShellOper = -1
 End Function
+
 Function GetBoiler(ByVal sFile As String) As String
     Dim fso As Object
     Dim ts As Object

@@ -185,6 +185,7 @@ Private Sub CommandButton1_Click()
     Call msg("RASCAR1 Form", "Your RASCAR1 form and covering letter have been created and saved to your RSR Temporary Drafts", 21)
     Unload Me
 End Sub
+
 Sub FillVars(v1)
     Call RemoveCaption(Me)
     If Epsilon = "" Then Call LoadDocs
@@ -387,27 +388,35 @@ Sub FillVars(v1)
     If v1 Then ComboBox33.AddItem "e-mailed"
     ComboBox33.ListIndex = 0
 End Sub
+
 Private Sub CommandButton3_Click()
     Call LaunchIE(Sheets("LookUp").Range("CH7"), 0)
 End Sub
+
 Private Sub TextBox1_Change()
     Frame1.Visible = True
 End Sub
+
 Private Sub TextBox2_Change()
     Frame1.Visible = True
 End Sub
+
 Private Sub TextBox3_Change()
     Frame1.Visible = True
 End Sub
+
 Private Sub TextBox4_Change()
     Frame1.Visible = True
 End Sub
+
 Private Sub TextBox5_Change()
     Frame1.Visible = True
 End Sub
+
 Private Sub TextBox6_Change()
     Frame1.Visible = True
 End Sub
+
 Private Sub TextBox7_Change()
     Frame1.Visible = True
 End Sub
