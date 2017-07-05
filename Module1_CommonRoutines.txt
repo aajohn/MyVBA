@@ -177,6 +177,7 @@ Sub AppointToOutlook(aSubj As String, aLoc As String, aStr, aBody As String, rMi
     Set OutApt = Nothing
     Set OutApp = Nothing
 End Sub
+
 Sub OutlookShowCal()
     Dim OutApp As Outlook.Application
     Dim OutNs As Namespace
@@ -196,6 +197,7 @@ Sub OutlookShowCal()
     Set OutNs = Nothing
     Set OutApp = Nothing
 End Sub
+
 Sub OutlookMtgRequest(aTo, aSubj, aLoc, aStr, aBody, rMin As Integer)
     Dim OutApp As New Outlook.Application
     Dim OutAppt As AppointmentItem
@@ -219,6 +221,7 @@ Sub OutlookMtgRequest(aTo, aSubj, aLoc, aStr, aBody, rMin As Integer)
     Set OutAppt = Nothing
     Set OutExp = Nothing
 End Sub
+
 Sub ScreenLayoutOff()
     Dim ws As Worksheet
     For Each ws In Worksheets
@@ -239,6 +242,7 @@ Sub ScreenLayoutOff()
         .AutoRecover.Enabled = True
     End With
 End Sub
+
 Sub OpenWordDoc(File2, From, sAddr, cAddr)
     Dim nDoc, Address, Address2, Address3, OurRef, Office, AgencyAddress, x, From2, From3, From4, RefCell
     Dim wdDoc2 As Object
@@ -337,6 +341,7 @@ Sub OpenWordDoc(File2, From, sAddr, cAddr)
     Set wdApp = Nothing
     Set wdDoc = Nothing
 End Sub
+
 Sub dataRow(siteCode As String)
     Dim sitecode2 As String
     Application.ScreenUpdating = False
@@ -366,12 +371,14 @@ Sub dataRow(siteCode As String)
         tempSite = False
     End If
 End Sub
+
 Sub CopyPasteData(CopyRow, Update, sVar)
     Load UserFormLoadCPD
     Call UserFormLoadCPD.FillVars(CopyRow, Update, sVar)
     UserFormLoadCPD.Show
     DoEvents
 End Sub
+
 Sub Tracking()
     Sheets("Tracking").Select
     ActiveSheet.Unprotect
@@ -380,22 +387,26 @@ Sub Tracking()
     Application.ScreenUpdating = False
     UserFormLoadTracking.Show
 End Sub
+
 Sub Display()
     Application.ScreenUpdating = False
     Call ScreenLayout("Details")
     Worksheets("Details").ScrollArea = "A1:O48"
     ActiveSheet.Protect
 End Sub
+
 Sub MySites()
     Application.ScreenUpdating = False
     Call ScreenLayout("MySites")
     UserFormLoadMySites.Show
 End Sub
+
 Sub Inspections()
     Worksheets("Inspections").ScrollArea = ""
     Call ScreenLayout("Inspections")
     UserFormLoadInspections.Show
 End Sub
+
 Sub Instruments()
     Call ScreenLayout("Instruments")
     Worksheets("Instruments").ScrollArea = "A1:M45"
@@ -404,6 +415,7 @@ Sub Instruments()
     Range("C4").Select
     UserFormLoadInstruments.Show
 End Sub
+
 Sub ScreenLayout(tSheet As String)
     Sheets(tSheet).Select
     ActiveSheet.Unprotect
@@ -418,6 +430,7 @@ Sub ScreenLayout(tSheet As String)
     Range("A1").Select
     ActiveWindow.Zoom = True
 End Sub
+
 Sub RemoveApp()
     Dim pDate As Date
     Dim text As String
@@ -461,6 +474,7 @@ Sub RemoveApp()
     Sheets("Datasheet").Range("AA" & DRow) = text
     Call CopyPasteData(DRow, True, True)
 End Sub
+
 Sub LaunchIE(webAddr As String, varN As Byte, oppDetails As String)
     Dim appIE As Object
     On Error GoTo ErrHandler:
