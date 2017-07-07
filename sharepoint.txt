@@ -1,0 +1,42 @@
+' Some public constants, but they can be procedure level
+' if you don't think you're going to need them elsewhere.
+Public Const sDEMAND_ROLE_GUID As String = "{8D4E11A0-5AAD-4214-B10F-CEA5194787D2}"
+Public Const sSHAREPOINT_SITE As String = "https://yoursharepointsite.sharepoint.com/agsinwhateveryoursiteis/"
+
+Sub TestPullFromSharepoint()
+' This pulls the data from a SharePoint list. Don't forget a reference
+' to the MS ActiveX Objects in "References".
+
+' Variable declarations.
+Dim cn As ADODB.Connection
+Dim rs As ADODB.Recordset
+Dim sConn As String
+Dim sSQL As String
+
+' Build the connection string: use the ACE engine, the database is the URL if your site
+' and the GUID of your SharePoint list is the LIST.
+sConn = "Provider=Microsoft.ACE.OLEDB.12.0;WSS;IMEX=1;RetrieveIds=Yes;" & _
+"DATABASE=" & sSHAREPOINT_SITE & ";" & _
+"LIST=" & sDEMAND_ROLE_GUID & ";"
+
+' Create some new objects.
+Set cn = New ADODB.Connection
+Set rs = New ADODB.Recordset
+
+' Open the connection.
+With cn
+.ConnectionString = sConn
+.Open
+End With
+
+' Build your SQL the way you would any other. You can add a WHERE clause
+' if you need to filter on some criteria.
+sSQL = "SELECT tbl.[Last Name] FROM [Employees] as tbl;"
+
+' Open up the recordset.
+rs.Open sSQL, cn, adOpenStatic, adLockOptimistic
+
+' Copy the recordset data to a worksheet.
+ThisWorkbook.Worksheets("Sheet1").Range("A2").CopyFromRecordset rs
+
+End Sub
