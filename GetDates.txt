@@ -1,61 +1,108 @@
 Attribute VB_Name = "GetDates"
 Option Explicit
-Sub GetDates()
 
-    'Set up variables
+Sub GetDates()
+  
+    'Set up variables, some may not be used below
+    Dim sh1 As Worksheet
+    Dim sh2 As Worksheet
+    
     Dim LastRow As Long
     Dim aLastRow As Long
+    
     Dim i As Integer
     Dim erow As Integer
+    
     Dim LastDate As Date
     
-    'find the last row that contains data
-    LastRow = Workbooks("TestCompoCode.xlsm").Worksheets("My COMPO").Range("A" & Rows.count).End(xlUp).Row
+    Dim MyFile As Variant
     
-    'find last appointment
-    If Not IsDate(Cells(LastRow, 5)) Then
-        LastDate = "01/01/2017"
+    Dim MyPrompt As String
+    Dim ans As String
     
-    Else: LastDate = Cells(LastRow, "e").Value
+    Dim strFileToOpen As String
+    
+    On Error GoTo Err_Execute
+    
+    ' Written by royUK
+    ' [url]www.excel-it.com[/url]
+ 
+ 
+    'switch off updating to speed your code & stop irritating flickering
+    Application.ScreenUpdating = False
+ 
+    'Use the Status Bar to inform  user of the macro's progress
+    'change the cursor to hourglass
+    Application.Cursor = xlWait
+    ' makes sure that the statusbar is visible
+    Application.DisplayStatusBar = True
+    'add your message to status bar
+    Application.StatusBar = "Formatting Report..."
+
+    Set sh1 = ThisWorkbook.Sheets("My COMPO")
         
+    'find the last row that contains data in this workbook, worksheet
+    LastRow = sh1.Range("A" & Rows.Count).End(xlUp).Row
+    
+    'find last appointment, col 5 "start date"
+    If Not IsDate(Cells(LastRow, 5)) Then
+        LastDate = DateValue("01/01/2017")
+
+        Else: LastDate = DateValue(Cells(LastRow, "E"))
+
     End If
     
-    'open the rota
-    Workbooks.Open Filename:="\\prodds.ntnl\shared\NE\NorthEast\Incidents and Contingency Planning\EM Incidents\Rotas\West Yorks\Day time EMSC and Compo rota (May-Nov 2017).xlsx"
-    
-    
-    'find the last row that contains data
-    aLastRow = Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Range("R" & Rows.count).End(xlUp).Row
+    'find the rota
+    strFileToOpen = Application.GetOpenFilename(Title:="Please choose a file to open", FileFilter:="Excel Files *.xls* (*.xls*),")
 
+    If strFileToOpen = "" Then
+        MsgBox "No file selected.", vbExclamation, "Sorry!"
+    Exit Sub
+
+    Else
+
+        Workbooks.Open Filename:=strFileToOpen
+        Set sh2 = Sheets("Duty Rota")
+    End If
+         
+      'find the last row that contains data in the rota
+       aLastRow = sh2.Range("R" & Rows.Count).End(xlUp).Row
+    
+       'the data we want starts at row 5 of the sheet
+       '
     For i = 5 To aLastRow
-        
-        If Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Cells(i, 18).Value > LastDate And Workbooks("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Worksheets("Duty Rota").Cells(i, 20).Value = "Arnold J" Then
 
+        'check for last retrieved data where I've been rostered...
+        If sh2.Cells(i, 18) > LastDate And sh2.Cells(i, 20).Value = "Arnold J" Then
+
+            '...select and copy new date when I'm rostered...
             ActiveSheet.Cells(i, 18).Select
-            
+
             Selection.Copy
-                       
-            Windows("TestCompoCode.xlsm").Activate
-            Worksheets("My COMPO").Select
+
+            'make sure workbook is ready... Windows("TestCompoCode.xlsm").Activate
+            'Windows("strFileToOpen").Activate
+            With sh1
             
             'move to next empty row
-            erow = Cells(Rows.count, 1).End(xlUp).Offset(1, 0).Row
-            
+            erow = Cells(Rows.Count, 1).End(xlUp).Offset(1, 0).Row
+
             ActiveSheet.Cells(erow, 5).Select
-            
+
             'paste COMPO date
             Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
             :=False, Transpose:=False
             Application.CutCopyMode = False
-            
+
             'change date format
             Selection.NumberFormat = "m/d/yyyy"
-            
+
+            'fill in the other cells next to new date
             Cells(erow, 1).Value = "COMPO"
             Cells(erow, 2).Value = "LS11 9AT"
             Cells(erow, 3).Value = "Day time EDMO"
             Cells(erow, 4).Value = ""
-            
+
             Cells(erow, 6).Value = "09:00"
             Cells(erow, 7).Value = Cells(erow, 5)
             'Cells(erow, 7).NumberFormat = "m/d/yy;@"
@@ -64,16 +111,35 @@ Sub GetDates()
             Cells(erow, 9).Value = "90"
             LastDate = Cells(erow, 5).Value
             
-            Windows("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Activate
-            Worksheets("Duty Rota").Select
+            End With
+            
+            'switch back to data source...
+            'Windows(strFileToOpen).Activate
+            'Worksheets("Duty Rota").Select
+                
         End If
-           
+
     Next i
-        
-    'switch to the rota
-    Windows("Day time EMSC and Compo rota (May-Nov 2017).xlsx").Activate
+
+    'switch to the rota and close it
     ActiveWindow.Close
     
+    'restore default cursor
+    Application.Cursor = xlDefault
+    'gives control of the statusbar back to the programme
+    Application.StatusBar = False
+    Application.ScreenUpdating = True
+Exit Sub
+     
+Err_Execute:
+    MsgBox "An error occurred - Getting items from that workbook"
+    'restore default cursor
+    Application.Cursor = xlDefault
+    'gives control of the statusbar back to the programme
+    Application.StatusBar = False
+    Application.ScreenUpdating = True
+
 End Sub
+
 
 
